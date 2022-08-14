@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ITarefa } from "../../types/tarefa";
 import Button from "../button";
 import style from  './Form.module.scss';
+import { v4 as uuidv4 } from 'uuid';
 
 
 
@@ -17,7 +18,19 @@ export default function Form ({
         // console.log('Estado atual', {tarefa: tarefa, tempo: tempo});
 
         //Capturando a info como param, para não ter que tipar novamente
-        setTarefas(tarefasAntigas => [...tarefasAntigas, {tarefa, tempo}]);
+        setTarefas(tarefasAntigas => [
+            ...tarefasAntigas, 
+            { tarefa,
+             tempo,
+             selecionado: false,
+             completado: false,
+             id: uuidv4() //identificador unico da lib uuid
+            }
+        ]);
+
+        //resetando para vazio após definir na lista
+        setTarefa('');
+        setTempo('00:00');
     }
 
     return (
