@@ -22,6 +22,23 @@ function App() {
     })));
   }
 
+  //Função que vai realizar as definições de uma tarefa finalizada
+  function finalizarTarefa() {
+    if(selecionado) {
+      setTarefas(tarefasAnteriores => tarefasAnteriores.map(tarefa => {
+        if(tarefa.id === selecionado.id) {
+          //se for igual definir completado, se não não faz nada
+          return {
+            ...tarefa,
+            selecionado: false,
+            completado: true,
+          }
+        }
+        return tarefa;
+      }));
+    }
+  }
+
   return (
     <div className={style.AppStyle}>
       <Form setTarefas={setTarefas}/>
@@ -29,7 +46,10 @@ function App() {
        tarefas={tarefas}
        selecionaTarefa={selecionaTarefa}
       />
-      <StopWatch selecionado={selecionado}/>
+      <StopWatch 
+        selecionado={selecionado}
+        finalizarTarefa={finalizarTarefa}
+      />
     </div>
   );
 }

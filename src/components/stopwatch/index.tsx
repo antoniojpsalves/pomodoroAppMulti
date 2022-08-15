@@ -6,10 +6,11 @@ import { ITarefa } from "../../types/tarefa";
 import { useEffect, useState } from "react";
 
 interface Props {
-    selecionado: ITarefa | undefined;
+    selecionado: ITarefa | undefined,
+    finalizarTarefa: () => void
 }
 
-export default function StopWatch({ selecionado }: Props) {
+export default function StopWatch({ selecionado , finalizarTarefa}: Props) {
 
     // console.log('Tempo', tempoParaSegundos('01:01:01'));
 
@@ -21,14 +22,28 @@ export default function StopWatch({ selecionado }: Props) {
             setTempo(tempoParaSegundos(selecionado.tempo));
     }, [selecionado]);
 
+
+    //Excecutando a contagem regressiva recursivamente
+    function regressiva(contador: number = 0) {
+        
+        setTimeout(() => {
+            if(contador > 0) {
+                setTempo(contador - 1);
+                return regressiva(contador - 1);
+            }
+            finalizarTarefa();//se o contador não for maior que 0 finaliza a tarefa.
+        }, 1000);
+    }
+
     return (
         <div className={style.stopWatch}>
             <p className={style.title}> Escolha um dos cards e inicie o cronômetro </p>
-            {/* Tempo: {tempo} */}
             <div className={style.watchWrapper}>
-                <Watch />
+                <Watch tempo={tempo}/>
             </div>
-            <Button text="Iniciar"/>
+            <Button
+             onClick={() => regressiva(tempo)}
+             text="Iniciar"/>
         </div>
     );
 }
