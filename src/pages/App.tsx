@@ -3,6 +3,7 @@ import Form from '../components/form';
 import List from '../components/list';
 import StopWatch from '../components/stopwatch';
 import { ITarefa } from '../types/tarefa';
+// import song from '../assets/song/OOT_Secret.wav';
 import style from './App.module.scss';
 
 function App() {
@@ -11,6 +12,11 @@ function App() {
   const [tarefas, setTarefas] = useState<ITarefa[]>([]); //pode ser um array de Itarefa ou vazio
 
   const [selecionado, setSelecionado] = useState<ITarefa>();
+  
+  //importei como required porque ainda não sei tipar módulos personalizados
+  const song = require('../assets/song/OOT_Secret.wav');
+  const audio = new Audio(song);
+
 
   function selecionaTarefa(tarefaSelecionada: ITarefa) {
     setSelecionado(tarefaSelecionada);
@@ -28,6 +34,7 @@ function App() {
       setTarefas(tarefasAnteriores => tarefasAnteriores.map(tarefa => {
         if(tarefa.id === selecionado.id) {
           //se for igual definir completado, se não não faz nada
+          audio.play();
           return {
             ...tarefa,
             selecionado: false,
