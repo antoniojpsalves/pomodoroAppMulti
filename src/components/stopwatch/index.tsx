@@ -7,20 +7,16 @@ import { useEffect, useState } from "react";
 
 interface Props {
     selecionado: ITarefa | undefined,
+    contando: boolean,
+    setContando: (estado: boolean) => void,
     finalizarTarefa: () => void
 }
 
-export default function StopWatch({ selecionado , finalizarTarefa}: Props) {
+export default function StopWatch({ selecionado , contando, setContando , finalizarTarefa}: Props) {
 
     // console.log('Tempo', tempoParaSegundos('01:01:01'));
 
     const [tempo, setTempo] = useState<number>();
-
-    /**
-     * Criei um estado para o cronometro para corrigir o bug encontrado pelo victor
-     * Bug: ao inicar um cronometro, ainda era possível selecionar outra tarefa. Concluindo duas.
-     */
-    const [contando, setContando] = useState<boolean>(false);
 
     //ESTUDAR MT USE EFFECT - recebe uma função, e um array de dependências
     useEffect(()=> {

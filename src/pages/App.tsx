@@ -12,6 +12,12 @@ function App() {
   const [tarefas, setTarefas] = useState<ITarefa[]>([]); //pode ser um array de Itarefa ou vazio
 
   const [selecionado, setSelecionado] = useState<ITarefa>();
+
+  /**
+     * Criei um estado para o cronometro para corrigir o bug encontrado pelo victor
+     * Bug: ao inicar um cronometro, ainda era possível selecionar outra tarefa. Concluindo duas.
+     */
+   const [contando, setContando] = useState<boolean>(false);
   
   //importei como required porque ainda não sei tipar módulos personalizados
   const song = require('../assets/song/OOT_Secret.wav');
@@ -19,13 +25,15 @@ function App() {
 
 
   function selecionaTarefa(tarefaSelecionada: ITarefa) {
-    setSelecionado(tarefaSelecionada);
-
-    //iterando sobre cada tarefa para descobrir qual está selecionada pelo id
-    setTarefas(tarefasAnteriores => tarefasAnteriores.map(tarefa => ({
-      ...tarefa,
-      selecionado: tarefa.id === tarefaSelecionada.id ? true : false
-    })));
+    if(!contando) {
+      setSelecionado(tarefaSelecionada);
+  
+      //iterando sobre cada tarefa para descobrir qual está selecionada pelo id
+      setTarefas(tarefasAnteriores => tarefasAnteriores.map(tarefa => ({
+        ...tarefa,
+        selecionado: tarefa.id === tarefaSelecionada.id ? true : false
+      })));
+    }
   }
 
   //Função que vai realizar as definições de uma tarefa finalizada
@@ -55,6 +63,8 @@ function App() {
       />
       <StopWatch 
         selecionado={selecionado}
+        contando={contando}
+        setContando={setContando}
         finalizarTarefa={finalizarTarefa}
       />
     </div>
