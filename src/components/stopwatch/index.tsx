@@ -16,6 +16,12 @@ export default function StopWatch({ selecionado , finalizarTarefa}: Props) {
 
     const [tempo, setTempo] = useState<number>();
 
+    /**
+     * Criei um estado para o cronometro para corrigir o bug encontrado pelo victor
+     * Bug: ao inicar um cronometro, ainda era possível selecionar outra tarefa. Concluindo duas.
+     */
+    const [contando, setContando] = useState<boolean>(false);
+
     //ESTUDAR MT USE EFFECT - recebe uma função, e um array de dependências
     useEffect(()=> {
         if(selecionado?.tempo)
@@ -25,12 +31,15 @@ export default function StopWatch({ selecionado , finalizarTarefa}: Props) {
 
     //Excecutando a contagem regressiva recursivamente
     function regressiva(contador: number = 0) {
+
+        setContando(true);
         
         setTimeout(() => {
             if(contador > 0) {
                 setTempo(contador - 1);
                 return regressiva(contador - 1);
             }
+            setContando(false);
             finalizarTarefa();//se o contador não for maior que 0 finaliza a tarefa.
         }, 1000);
     }
@@ -42,7 +51,7 @@ export default function StopWatch({ selecionado , finalizarTarefa}: Props) {
                 <Watch tempo={tempo}/>
             </div>
             <Button
-             onClick={() => regressiva(tempo)}
+             onClick={() => !contando && regressiva(tempo)}
              text="Iniciar"/>
         </div>
     );
